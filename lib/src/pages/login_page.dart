@@ -171,7 +171,7 @@ class LoginPage extends StatelessWidget {
     Map info = await usuarioProvider.login(bloc.email, bloc.password);
 
     if (info['ok']) {
-      print('Token de Firebase: ' + info['token']);
+      // print('Token de Firebase: ' + info['token']);
       Navigator.pushReplacementNamed(context, 'prehome');
     } else {
       mostrarAlerta(context, info['message']);

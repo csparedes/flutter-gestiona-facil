@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:gestiona_facil/src/blocs/productos_bloc.dart';
 import 'package:gestiona_facil/src/blocs/provider.dart';
 import 'package:gestiona_facil/src/models/producto_model.dart';
-import 'package:gestiona_facil/src/utils/utils.dart' as utils;
+// import 'package:gestiona_facil/src/utils/utils.dart' as utils;
 
 class ProductoPage extends StatefulWidget {
   @override
@@ -28,17 +28,15 @@ class _ProductoPageState extends State<ProductoPage> {
   Widget build(BuildContext context) {
     final ProductoModel prodData = ModalRoute.of(context).settings.arguments;
     productosBloc = Provider.productosBloc(context);
-
     if (prodData != null) {
       producto = prodData;
-    } else {
-      producto = new ProductoModel();
     }
 
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text(producto.prodNombreProducto),
+        title: Text(
+            (producto.proNombre == null) ? 'Sin Texto' : producto.proNombre),
         actions: [
           IconButton(
             icon: Icon(Icons.photo_size_select_actual),
@@ -59,10 +57,10 @@ class _ProductoPageState extends State<ProductoPage> {
               children: [
                 _mostrarFoto(),
                 _crearNombre(),
-                _crearCodigo(),
-                _crearPrecioVenta(),
-                _crearPrecioCompra(),
-                _crearFechaCaducidad(context),
+                _mostrarCategoria(),
+                // _crearPrecioVenta(),
+                // _crearPrecioCompra(),
+                // _crearFechaCaducidad(context),
                 // _crearDisponible(),
                 _crearBoton(context),
               ],
@@ -75,128 +73,128 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _crearNombre() {
     return TextFormField(
-      initialValue: producto.prodNombreProducto,
+      initialValue: producto.proNombre,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         labelText: 'Producto',
       ),
-      onSaved: (value) => producto.prodNombreProducto = value,
-      validator: (value) {
-        if (value.length < 3) {
-          return 'Ingrese el nombre del producto';
-        } else {
-          return null;
-        }
-      },
+      onSaved: (value) => producto.proNombre = value,
+      // validator: (value) {
+      //   if (value.length < 3) {
+      //     return 'Ingrese el nombre del producto';
+      //   } else {
+      //     return null;
+      //   }
+      // },
     );
   }
 
-  Widget _crearCodigo() {
+  Widget _mostrarCategoria() {
     return TextFormField(
-      initialValue: producto.prodCodigo,
-      textCapitalization: TextCapitalization.sentences,
+      initialValue: producto.proIdCategoria,
+      // textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        labelText: 'Codigo',
+        labelText: 'Categoría',
       ),
-      onSaved: (value) => producto.prodCodigo = value,
-      validator: (value) {
-        if (value.length < 3) {
-          return 'Ingrese el código del producto';
-        } else {
-          return null;
-        }
-      },
+      onSaved: (value) => producto.proIdCategoria = value,
+      // validator: (value) {
+      //   if (value.length < 3) {
+      //     return 'Ingrese el código del producto';
+      //   } else {
+      //     return null;
+      //   }
+      // },
     );
   }
 
-  Widget _crearFechaCaducidad(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Text(producto.prodFechaCaducidad.isNotEmpty
-            ? producto.prodFechaCaducidad
-            : 'Fecha de Caducidad'),
-        RaisedButton.icon(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          color: Theme.of(context).primaryColor,
-          textColor: Colors.white,
-          icon: Icon(Icons.calendar_today),
-          label: Text('Escoja una Fecha'),
-          onPressed: () {
-            Future<DateTime> fecha = showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2019),
-              lastDate: DateTime(2026),
-              confirmText: 'Aceptar',
-              cancelText: 'Cancelar',
-              helpText: 'Calendario',
-              builder: (BuildContext context, Widget child) {
-                return Theme(
-                  data: ThemeData.light().copyWith(
-                    colorScheme: ColorScheme.light(
-                      primary: Colors.white,
-                      onPrimary: Theme.of(context).primaryColor,
-                      surface: Colors.white,
-                      onSurface: Colors.white,
-                    ),
-                    dialogBackgroundColor: Color.fromRGBO(25, 128, 131, 0.7),
-                    // dialogBackgroundColor: Colors.white,
-                  ),
-                  child: child,
-                );
-              },
-            );
+  // Widget _crearFechaCaducidad(BuildContext context) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //     children: [
+  //       Text(producto.prodFechaCaducidad.isNotEmpty
+  //           ? producto.prodFechaCaducidad
+  //           : 'Fecha de Caducidad'),
+  //       RaisedButton.icon(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(20.0),
+  //         ),
+  //         color: Theme.of(context).primaryColor,
+  //         textColor: Colors.white,
+  //         icon: Icon(Icons.calendar_today),
+  //         label: Text('Escoja una Fecha'),
+  //         onPressed: () {
+  //           Future<DateTime> fecha = showDatePicker(
+  //             context: context,
+  //             initialDate: DateTime.now(),
+  //             firstDate: DateTime(2019),
+  //             lastDate: DateTime(2026),
+  //             confirmText: 'Aceptar',
+  //             cancelText: 'Cancelar',
+  //             helpText: 'Calendario',
+  //             builder: (BuildContext context, Widget child) {
+  //               return Theme(
+  //                 data: ThemeData.light().copyWith(
+  //                   colorScheme: ColorScheme.light(
+  //                     primary: Colors.white,
+  //                     onPrimary: Theme.of(context).primaryColor,
+  //                     surface: Colors.white,
+  //                     onSurface: Colors.white,
+  //                   ),
+  //                   dialogBackgroundColor: Color.fromRGBO(25, 128, 131, 0.7),
+  //                   // dialogBackgroundColor: Colors.white,
+  //                 ),
+  //                 child: child,
+  //               );
+  //             },
+  //           );
 
-            setState(() {
-              fecha.then((value) =>
-                  producto.prodFechaCaducidad = utils.transformarFecha(value));
-            });
-          },
-        ),
-      ],
-    );
-  }
+  //           setState(() {
+  //             fecha.then((value) =>
+  //                 producto.prodFechaCaducidad = utils.transformarFecha(value));
+  //           });
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Widget _crearPrecioVenta() {
-    return TextFormField(
-      initialValue: producto.prodPrecioVenta.toString(),
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-        labelText: 'Precio de Venta',
-      ),
-      onSaved: (value) => producto.prodPrecioVenta = value,
-      validator: (value) {
-        if (utils.isNumeric(value)) {
-          return null;
-        } else {
-          return 'Solo números';
-        }
-      },
-    );
-  }
+  // Widget _crearPrecioVenta() {
+  //   return TextFormField(
+  //     initialValue: producto.prodPrecioVenta.toString(),
+  //     keyboardType: TextInputType.numberWithOptions(decimal: true),
+  //     textCapitalization: TextCapitalization.sentences,
+  //     decoration: InputDecoration(
+  //       labelText: 'Precio de Venta',
+  //     ),
+  //     onSaved: (value) => producto.prodPrecioVenta = value,
+  //     validator: (value) {
+  //       if (utils.isNumeric(value)) {
+  //         return null;
+  //       } else {
+  //         return 'Solo números';
+  //       }
+  //     },
+  //   );
+  // }
 
-  Widget _crearPrecioCompra() {
-    return TextFormField(
-      initialValue: producto.prodPrecioCompra.toString(),
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-        labelText: 'Precio de Compra',
-      ),
-      onSaved: (value) => producto.prodPrecioCompra = value,
-      validator: (value) {
-        if (utils.isNumeric(value)) {
-          return null;
-        } else {
-          return 'Solo números';
-        }
-      },
-    );
-  }
+  // Widget _crearPrecioCompra() {
+  //   return TextFormField(
+  //     initialValue: producto.prodPrecioCompra.toString(),
+  //     keyboardType: TextInputType.numberWithOptions(decimal: true),
+  //     textCapitalization: TextCapitalization.sentences,
+  //     decoration: InputDecoration(
+  //       labelText: 'Precio de Compra',
+  //     ),
+  //     onSaved: (value) => producto.prodPrecioCompra = value,
+  //     validator: (value) {
+  //       if (utils.isNumeric(value)) {
+  //         return null;
+  //       } else {
+  //         return 'Solo números';
+  //       }
+  //     },
+  //   );
+  // }
 
   Widget _crearBoton(BuildContext context) {
     return RaisedButton.icon(
@@ -220,10 +218,13 @@ class _ProductoPageState extends State<ProductoPage> {
     });
 
     if (foto != null) {
-      producto.prodFotoUrl = await productosBloc.subirFoto(foto);
+      producto.proFoto = await productosBloc.subirFoto(foto);
+      // print("Secure link foto: " + producto.proFoto);
     }
-
-    if (producto.prodId == "" || producto.prodId == null) {
+    // print("Producto id " + producto.proId.toString());
+    if (producto.proId == "" || producto.proId == null) {
+      producto.proId = '0';
+      print("En producto page: " + producto.mostrarProducto());
       productosBloc.agregarProducto(producto);
     } else {
       productosBloc.editarProducto(producto);
@@ -275,11 +276,11 @@ class _ProductoPageState extends State<ProductoPage> {
   //   }
   // }
   _mostrarFoto() {
-    if (producto.prodFotoUrl != null) {
+    if (producto.proFoto != null) {
       return Container(
         child: FadeInImage(
             placeholder: AssetImage('assets/jar-loading.gif'),
-            image: NetworkImage(producto.prodFotoUrl)),
+            image: NetworkImage(producto.proFoto)),
       );
     } else {
       if (foto != null) {
@@ -309,7 +310,7 @@ class _ProductoPageState extends State<ProductoPage> {
     }
     setState(() {
       if (foto != null) {
-        producto.prodFotoUrl = null;
+        producto.proFoto = null;
       } else {
         print("Ninguna imagen seleccionada en _procesarImagen()");
       }

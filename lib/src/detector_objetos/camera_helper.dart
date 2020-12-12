@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
 import 'package:gestiona_facil/src/detector_objetos/tflite_helper.dart';
 
 class CameraHelper {

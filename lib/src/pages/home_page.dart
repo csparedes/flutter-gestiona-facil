@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
           (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
         if (snapshot.hasData) {
           final productos = snapshot.data;
-
           return ListView.builder(
             itemCount: productos.length,
             itemBuilder: (context, i) =>
@@ -55,12 +54,11 @@ class _HomePageState extends State<HomePage> {
       background: Container(
         color: Colors.red,
       ),
-      onDismissed: (direccion) =>
-          productosBloc.borrarProducto(producto.prodId.toString()),
+      onDismissed: (direccion) => productosBloc.borrarProducto(producto.proId),
       child: Card(
         child: Column(
           children: [
-            (producto.prodFotoUrl == "" || producto.prodFotoUrl == null)
+            (producto.proFoto == "" || producto.proFoto == null)
                 ? Image(
                     image: AssetImage('assets/no-image.png'),
                     height: 100,
@@ -69,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 : FadeInImage(
                     placeholder: AssetImage('assets/jar-loading.gif'),
-                    image: NetworkImage(producto.prodFotoUrl),
+                    image: NetworkImage(producto.proFoto),
                     height: 100,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -80,12 +78,11 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                      '${producto.prodNombreProducto} = ${producto.prodPrecioVenta}'),
-                  Text('El producto caduca el: ${producto.prodFechaCaducidad}')
+                  Text('${producto.proNombre}'),
+                  Text('Categoría Id: ${producto.proIdCategoria}')
                 ],
               ),
-              subtitle: Text(producto.prodId.toString()),
+              subtitle: Text(producto.proId.toString()),
               onTap: () =>
                   Navigator.pushNamed(context, 'producto', arguments: producto)
                       .then((value) {
@@ -103,7 +100,10 @@ class _HomePageState extends State<HomePage> {
       child: Icon(Icons.add),
       onPressed: () => Navigator.pushNamed(context, 'producto').then((value) {
         setState(() {
-          print("Valor de value: $value");
+          if (value) {
+            print("Valor de value: $value");
+          }
+          print('Value en Null :v');
         });
       }),
       backgroundColor: Theme.of(context).primaryColor,

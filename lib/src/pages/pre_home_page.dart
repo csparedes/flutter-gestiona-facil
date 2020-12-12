@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestiona_facil/src/pages/compras_page.dart';
 import 'package:gestiona_facil/src/pages/home_page.dart';
-import 'package:gestiona_facil/src/pages/ventas_page.dart';
+import 'package:gestiona_facil/src/pages/ventas/ventas_page.dart';
 
 class PreHomePage extends StatefulWidget {
   @override

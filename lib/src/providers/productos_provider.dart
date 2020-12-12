@@ -1,67 +1,68 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:gestiona_facil/src/models/producto_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
 
+import 'package:gestiona_facil/src/models/producto_model.dart';
+import 'package:gestiona_facil/src/providers/usuario_provider.dart';
+
 class ProductosProvider {
-  final String _url =
-      'https://appmovil.gestionafacil.ibx.lat/viveres_stalin/public/productos';
+  // final String _url =
+  //     'https://appmovil.gestionafacil.ibx.lat/viveres_stalin/public/productos';
+
+  final String _url = 'http://10.0.2.2:3000/api/productos';
   // final _prefs = new PreferenciasUsuario();
-  final Map<String, String> _cabecera = {
+  final String token = UsuarioProvider.tokenNode;
+
+  Map<String, String> _cabecera = {
     "Accept": "*/*",
-    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-    // "User-Agent": "PostmanRuntime/7.26.8",
+    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
   };
 
   Future<bool> crearProducto(ProductoModel producto) async {
+    print("instancia de crear Producto: " + producto.mostrarProducto());
+
+    // _cabecera["token"] = UsuarioProvider.tokenNode;
     final url = '$_url';
     final respuesta = await http.post(
       url,
-      body: codificacionUrlEncoded(producto),
+      body: producto.toJson(),
       headers: _cabecera,
     );
-    print(json.decode(respuesta.body));
+    final aux = json.decode(respuesta.body);
+    print('Respuesta de Crear Producto\n' + aux['message']);
     return true;
   }
 
   Future<List<ProductoModel>> cargarProducto() async {
     final url = '$_url';
+    //solo es necesario cargar el token aqui
+    _cabecera["token"] = UsuarioProvider.tokenNode;
 
-    final respuesta = await http.get(url);
+    final respuesta = await http.get(url, headers: _cabecera);
 
     final Map<String, dynamic> decodedData = jsonDecode(respuesta.body);
     final List<ProductoModel> listaProductos = new List<ProductoModel>();
-
     if (decodedData == null) return [];
 
     decodedData.forEach((key, value) {
-      if (key == "data") {
+      if (key == "productos") {
+        // listaProductos.add(value);
         final List aux = value;
-
-        aux.forEach((element) {
-          final temp = ProductoModel.fromJson(element);
-          temp.prodId = element['prod_id'];
-          temp.prodCodigo = element['prod_codigo'];
-          temp.prodNombreProducto = element['prod_nombreProducto'];
-          temp.prodFechaCaducidad = element['prod_fechaCaducidad'];
-          temp.prodPrecioCompra = element['prod_precioCompra'];
-          temp.prodPrecioVenta = element['prod_precioVenta'];
-          temp.prodFotoUrl = element['prod_fotoUrl'];
-          temp.prodDisponible = element['prod_disponible'];
+        aux.forEach((e) {
+          final temp = ProductoModel.fromJson(e);
           listaProductos.add(temp);
         });
       }
     });
-
     return listaProductos;
   }
 
   Future<List<ProductoModel>> buscarProducto(String id) async {
     final url = '$_url/$id';
 
-    final respuesta = await http.get(url);
+    final respuesta = await http.get(url, headers: _cabecera);
 
     final Map<String, dynamic> decodedData = jsonDecode(respuesta.body);
     final List<ProductoModel> listaProductos = new List<ProductoModel>();
@@ -69,12 +70,12 @@ class ProductosProvider {
     if (decodedData == null) return [];
 
     decodedData.forEach((key, value) {
-      if (key == "data") {
+      if (key == "producto") {
         final List aux = value;
 
         aux.forEach((element) {
           final temp = ProductoModel.fromJson(element);
-          temp.prodId = element['prod_id'];
+          temp.proId = element['proId'];
           listaProductos.add(temp);
         });
       }
@@ -85,7 +86,7 @@ class ProductosProvider {
 
   Future<int> borrarProducto(String id) async {
     final url = '$_url/$id';
-    final resp = await http.delete(url);
+    final resp = await http.delete(url, headers: _cabecera);
     if (json.decode(resp.body) != null) {
       return 1;
     } else {
@@ -94,15 +95,18 @@ class ProductosProvider {
   }
 
   Future<int> editarProducto(ProductoModel producto) async {
-    final url = '$_url/${producto.prodId}';
+    // _cabecera["token"] = UsuarioProvider.tokenNode;
+    print("Suceso en editar producto" + producto.mostrarProducto());
+
+    final url = '$_url/${producto.proId}';
     final respuesta = await http.put(
       url,
-      body: codificacionUrlEncoded(producto),
+      body: producto.toJson(),
       headers: _cabecera,
     );
     final decodedData = jsonDecode(respuesta.body);
     print("Respuesta de editar producto: $decodedData");
-    print("Status Code: ${respuesta.statusCode}");
+    // print("Status Code: ${respuesta.statusCode}");
     return 0;
   }
 
@@ -133,7 +137,7 @@ class ProductosProvider {
     }
 
     final respData = json.decode(resp.body);
-
+    print("Link de foto:\n" + respData['secure_url']);
     return respData['secure_url'];
   }
 }

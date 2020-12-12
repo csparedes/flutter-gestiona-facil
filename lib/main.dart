@@ -7,7 +7,10 @@ import 'package:gestiona_facil/src/pages/login_page.dart';
 import 'package:gestiona_facil/src/pages/pre_home_page.dart';
 import 'package:gestiona_facil/src/pages/producto_page.dart';
 import 'package:gestiona_facil/src/pages/registro_page.dart';
-import 'package:gestiona_facil/src/pages/ventas_page.dart';
+import 'package:gestiona_facil/src/pages/ventas/buscador_ventas.dart';
+import 'package:gestiona_facil/src/pages/ventas/detector_page.dart';
+import 'package:gestiona_facil/src/pages/ventas/lista_final_ventas.dart';
+import 'package:gestiona_facil/src/pages/ventas/ventas_page.dart';
 import 'package:gestiona_facil/src/preferencias_usuario/prefrencias_usuario.dart';
 
 void main() async {
@@ -35,6 +38,9 @@ class MyApp extends StatelessWidget {
           'ventas': (BuildContext context) => VentasPage(),
           'prehome': (BuildContext context) => PreHomePage(),
           'listaCompras': (BuildContext context) => ListaComprasPage(),
+          'detectorVentas': (_) => DetectorVentas(),
+          'buscadorVentas': (_) => BuscadorVentas(),
+          'listaFinalVentas': (_) => ListaFinalVentas()
         },
         theme: ThemeData(
           primaryColor: Color.fromRGBO(25, 128, 131, 1),
