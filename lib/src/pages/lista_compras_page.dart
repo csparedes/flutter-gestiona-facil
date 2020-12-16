@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestiona_facil/src/blocs/productos_bloc.dart';
-import 'package:gestiona_facil/src/models/producto_model.dart';
+// import 'package:gestiona_facil/src/blocs/productos_bloc.dart';
+// import 'package:gestiona_facil/src/models/producto_model.dart';
 import 'package:gestiona_facil/src/pages/ventas/buscador_ventas.dart';
 import 'package:gestiona_facil/src/pages/ventas/detector_page.dart';
 import 'package:gestiona_facil/src/pages/ventas/lista_final_ventas.dart';

@@ -14,39 +14,47 @@ class KardexExistenciaModel {
   KardexExistenciaModel({
     this.keId,
     this.keProId,
+    this.keProNombre,
     this.keFechaCaducidad,
     this.keCantidad,
-    this.keValorPromedio,
+    this.keValorUnitario,
     this.keValorTotal,
     this.keEstado,
   });
 
   String keId;
   String keProId;
+  String keProNombre;
   String keFechaCaducidad;
   int keCantidad;
-  double keValorPromedio;
+  double keValorUnitario;
   double keValorTotal;
   String keEstado;
 
   factory KardexExistenciaModel.fromJson(Map<String, dynamic> json) =>
       KardexExistenciaModel(
-        keId: json["keId"],
-        keProId: json["keProId"],
-        keFechaCaducidad: json["keFechaCaducidad"],
+        keId: json["keId"].toString(),
+        keProId: json["keProId"].toString(),
+        keProNombre: json['keProNombre'].toString(),
+        keFechaCaducidad: json["keFechaCaducidad"].toString(),
         keCantidad: json["keCantidad"],
-        keValorPromedio: json["keValorPromedio"].toDouble(),
+        keValorUnitario: json["keValorUnitario"].toDouble(),
         keValorTotal: json["keValorTotal"].toDouble(),
-        keEstado: json["keEstado"],
+        keEstado: json["keEstado"] == 1 ? '1' : '0',
       );
 
   Map<String, dynamic> toJson() => {
         "keId": keId,
         "keProId": keProId,
+        "keProNombre": keProNombre,
         "keFechaCaducidad": keFechaCaducidad,
         "keCantidad": keCantidad,
-        "keValorPromedio": keValorPromedio,
+        "keValorPromedio": keValorUnitario,
         "keValorTotal": keValorTotal,
         "keEstado": keEstado,
       };
+
+  String mostrarExistencia() {
+    return "\nID: $keId\nProducto ID: $keProId\nCaducidad: $keFechaCaducidad\nNombre: $keProNombre\nValor Unitario: $keValorUnitario\nValor Total: $keValorTotal";
+  }
 }

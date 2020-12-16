@@ -16,7 +16,7 @@ class ProductoPage extends StatefulWidget {
 class _ProductoPageState extends State<ProductoPage> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  // final productoProvider = new ProductosProvider();
+
   ProductosBloc productosBloc;
   ProductoModel producto = new ProductoModel();
   bool _guardando = false;

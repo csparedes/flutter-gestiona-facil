@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestiona_facil/src/blocs/kardex_existencia_bloc.dart';
 import 'package:gestiona_facil/src/blocs/login_bloc.dart';
 
 import 'package:gestiona_facil/src/blocs/productos_bloc.dart';
@@ -8,6 +9,7 @@ class Provider extends InheritedWidget {
   static Provider _instancia;
   final loginBloc = LoginBloc();
   final _productosBloc = ProductosBloc();
+  final _kardexExistenciasBloc = KardexExistenciaBloc();
 
   factory Provider({Key key, Widget child}) {
     if (_instancia == null) {
@@ -34,5 +36,11 @@ class Provider extends InheritedWidget {
     return context
         .dependOnInheritedWidgetOfExactType<Provider>()
         ._productosBloc;
+  }
+
+  static KardexExistenciaBloc kardexExistenciaBloc(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<Provider>()
+        ._kardexExistenciasBloc;
   }
 }

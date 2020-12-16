@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
@@ -31,7 +32,7 @@ class ProductosProvider {
       headers: _cabecera,
     );
     final aux = json.decode(respuesta.body);
-    print('Respuesta de Crear Producto\n' + aux['message']);
+
     return true;
   }
 
@@ -39,7 +40,7 @@ class ProductosProvider {
     final url = '$_url';
     //solo es necesario cargar el token aqui
     _cabecera["token"] = UsuarioProvider.tokenNode;
-
+    print("token: " + _cabecera["token"]);
     final respuesta = await http.get(url, headers: _cabecera);
 
     final Map<String, dynamic> decodedData = jsonDecode(respuesta.body);
@@ -59,23 +60,28 @@ class ProductosProvider {
     return listaProductos;
   }
 
-  Future<List<ProductoModel>> buscarProducto(String id) async {
-    final url = '$_url/$id';
-
+  Future<List<ProductoModel>> buscarProducto(String query) async {
+    final url = '$_url/find/$query';
+    _cabecera['token'] = UsuarioProvider.tokenNode;
     final respuesta = await http.get(url, headers: _cabecera);
 
-    final Map<String, dynamic> decodedData = jsonDecode(respuesta.body);
     final List<ProductoModel> listaProductos = new List<ProductoModel>();
 
-    if (decodedData == null) return [];
+    final Map<String, dynamic> decodedData = jsonDecode(respuesta.body);
+
+    if (decodedData == null) {
+      return [];
+    }
+    // print('DecodedData: ' + decodedData.toString());
 
     decodedData.forEach((key, value) {
-      if (key == "producto") {
+      if (key == "productos") {
+        // listaProductos.add(value);
+        // print('Todos los valores' + value);
         final List aux = value;
 
-        aux.forEach((element) {
-          final temp = ProductoModel.fromJson(element);
-          temp.proId = element['proId'];
+        aux.forEach((e) {
+          final temp = ProductoModel.fromJson(e);
           listaProductos.add(temp);
         });
       }
